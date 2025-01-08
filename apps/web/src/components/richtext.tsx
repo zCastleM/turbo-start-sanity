@@ -1,9 +1,9 @@
-import type { SanityRichTextProps } from "@/types";
 import {
   PortableText,
   type PortableTextReactComponents,
 } from "next-sanity";
 import Link from "next/link";
+import { SanityImage } from "./sanity-image";
 
 const components: Partial<PortableTextReactComponents> = {
   block: {
@@ -40,16 +40,27 @@ const components: Partial<PortableTextReactComponents> = {
     },
   },
   list: {
-    bullet: ({ children }) => <ul>{children}</ul>,
-    number: ({ children }) => <ol>{children}</ol>,
+    bullet: ({ children }) => (
+      <ul className="list-disc">{children}</ul>
+    ),
+    number: ({ children }) => (
+      <ol className="list-decimal">{children}</ol>
+    ),
   },
   listItem: {
-    bullet: ({ children }) => <li>{children}</li>,
-    number: ({ children }) => <li>{children}</li>,
+    bullet: ({ children }) => <li className="">{children}</li>,
+    number: ({ children }) => <li className="">{children}</li>,
   },
   types: {
     image: ({ value }) => {
-      return <>{JSON.stringify(value)}</>;
+      return (
+        <div className="max-h-[300px] my-4">
+          <SanityImage
+            asset={value}
+            className="max-h-[300px] w-auto"
+          />
+        </div>
+      );
     },
   },
   hardBreak: () => <br />,

@@ -10,7 +10,6 @@ async function fetchHomePageData() {
 
 export default async function Page() {
   const { data: homePageData } = await fetchHomePageData();
-  console.log("🚀 ~ Page ~ homePageData:", homePageData);
 
   if (!homePageData) {
     return <div>No home page data</div>;

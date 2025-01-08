@@ -2,12 +2,11 @@ import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
 import { HeroBlock } from "./sections/hero";
 import { CTABlock } from "./sections/cta";
 import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
+import { FaqAccordion } from "./sections/faq-accordion";
 
 export type PageBuilderProps = {
   pageBuilder: NonNullable<QueryHomePageDataResult>["pageBuilder"];
 };
-
-
 
 export function PageBuilder({ pageBuilder }: PageBuilderProps) {
   if (!pageBuilder) return null;
@@ -24,6 +23,8 @@ export function PageBuilder({ pageBuilder }: PageBuilderProps) {
             return (
               <FeatureCardsWithIcon key={block._key} {...block} />
             );
+          case "faqAccordion":
+            return <FaqAccordion key={block._key} {...block} />;
           default:
             return (
               <div

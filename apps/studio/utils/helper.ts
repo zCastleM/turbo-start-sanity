@@ -1,4 +1,4 @@
-import type { StringOptions } from "sanity";
+import { isPortableTextTextBlock, type StringOptions } from "sanity";
 
 export const isRelativeUrl = (url: string) =>
   url.startsWith("/") || url.startsWith("#") || url.startsWith("?");
@@ -11,7 +11,6 @@ export const isValidUrl = (url: string) => {
     return isRelativeUrl(url);
   }
 };
-
 
 export const capitalize = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1);
@@ -39,4 +38,23 @@ export const createRadioListLayout = (
     list,
     ...options,
   };
+};
+
+export const parseRichTextToString = (
+  value: unknown,
+  maxWords: number | undefined = undefined
+) => {
+  if (!Array.isArray(value)) return "No Content";
+
+  const text = value.map((val) => {
+    const test = isPortableTextTextBlock(val);
+    if (!test) return "";
+    return val.children
+      .map((child) => child.text)
+      .filter(Boolean)
+      .join(" ");
+  });
+  if (maxWords)
+    return `${text.join(" ").split(" ").slice(0, maxWords).join(" ")}...`;
+  return text.join(" ");
 };

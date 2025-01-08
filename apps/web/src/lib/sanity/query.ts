@@ -87,12 +87,29 @@ const heroBlock = /* groq */ `
   }
 `;
 
+const faqFragment = /* groq */ `
+  faqs[]->{
+    title,
+    _id,
+    _type,
+    ${richTextFragment}
+  }
+`;
+
+const faqAccordionBlock = /* groq */ `
+  _type == "faqAccordion" => {
+    ...,
+    ${faqFragment}
+  }
+`;
+
 const pageBuilderFragment = /* groq */ `
   pageBuilder[]{
     ...,
     _type,
     ${ctaBlock},
     ${heroBlock},
+    ${faqAccordionBlock}
   }
 `;
 
