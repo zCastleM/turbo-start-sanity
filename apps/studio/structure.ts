@@ -10,6 +10,7 @@ import {
   FileText,
   HomeIcon,
   MessageCircleQuestion,
+  User,
   type LucideIcon,
 } from "lucide-react";
 
@@ -101,6 +102,7 @@ export const structure = (
         list: { type: "blog", icon: FileText },
       }),
       createList({ S, type: "faq", icon: MessageCircleQuestion }),
+      createList({ S, type: "author", icon: User }),
       //   createIndexList({
       //     S,
       //     index: { type: "blogIndex", icon: BookMarked },

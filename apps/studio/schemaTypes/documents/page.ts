@@ -27,6 +27,12 @@ export const page = defineType({
         slugify: createSlug,
       },
     }),
+    defineField({
+      name: "image",
+      type: "image",
+      title: "Image",
+      group: GROUP.MAIN_CONTENT,
+    }),
     pageBuilderField,
     ...seoFields,
     ...ogFields,

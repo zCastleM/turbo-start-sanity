@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
 import { ogFields } from "../../utils/og-fields";
 import { seoFields } from "../../utils/seo-fields";
@@ -17,6 +17,12 @@ export const blog = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
+      name: "description",
+      type: "text",
+      title: "Description",
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
       name: "slug",
       type: "slug",
       title: "Slug",
@@ -25,6 +31,41 @@ export const blog = defineType({
         source: "title",
         slugify: createSlug,
       },
+    }),
+    defineField({
+      name: "authors",
+      type: "array",
+      title: "Authors",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [
+            {
+              type: "author",
+              options: {
+                disableNew: true,
+              },
+            },
+          ],
+          options: {
+            disableNew: true,
+          },
+        }),
+      ],
+      validation: (Rule) => [
+        Rule.required(),
+        Rule.max(1),
+        Rule.min(1),
+        Rule.unique(),
+      ],
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
+      name: "publishedAt",
+      type: "date",
+      initialValue: () => new Date().toISOString().split("T")[0],
+      title: "Published At",
+      group: GROUP.MAIN_CONTENT,
     }),
     defineField({
       name: "image",

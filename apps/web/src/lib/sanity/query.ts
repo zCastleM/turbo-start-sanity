@@ -35,6 +35,27 @@ const richTextFragment = /* groq */ `
   }
 `;
 
+const blogAuthorFragment = /* groq */ `
+  authors[0]->{
+    _id,
+    name,
+    position,
+    ${imageFragment}
+  }
+`;
+
+const blogCardFragment = /* groq */ `
+  _type,
+  _id,
+  title,
+  description,
+  "slug":slug.current,
+  richText,
+  image,
+  publishedAt,
+  ${blogAuthorFragment}
+`;
+
 const buttonsFragment = /* groq */ `
   buttons[]{
     text,
@@ -109,3 +130,18 @@ export const querySlugPageData = defineQuery(/* groq */ `
     ${pageBuilderFragment}
   }
   `);
+
+export const queryBlogIndexPageData = defineQuery(/* groq */ `
+  *[_type == "blogIndex"][0]{
+    _id,
+    ${pageBuilderFragment},
+    "featuredBlog": featured[0]->{
+      ${blogCardFragment}
+    }
+  }{
+    ...@,
+    "blogs": *[_type == "blog" && (_id != ^.featuredBlog._id)]{
+      ${blogCardFragment}
+    }
+  }
+`);

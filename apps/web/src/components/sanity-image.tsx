@@ -8,7 +8,13 @@ type ImageProps = {
   alt?: string;
 } & Omit<NextImageProps, "alt" | "src">;
 
-export function SanityImage({ asset, alt, ...props }: ImageProps) {
+export function SanityImage({
+  asset,
+  alt,
+  width,
+  height,
+  ...props
+}: ImageProps) {
   if (!asset?.asset) return null;
   const dimensions = getImageDimensions(asset.asset);
 
@@ -21,8 +27,8 @@ export function SanityImage({ asset, alt, ...props }: ImageProps) {
     <Image
       alt={alt ?? asset.alt ?? "Image"}
       src={url}
-      width={dimensions.width}
-      height={dimensions.height}
+      width={width ?? dimensions.width}
+      height={height ?? dimensions.height}
       {...props}
     />
   );
