@@ -8,12 +8,18 @@ export const getDocTypePrefix = (type: string) => {
   return type;
 };
 
+
+const slugMapper = {
+  homePage: "/",
+  blogIndex: "/blog",
+} as Record<string, string>;
+
 export const createSlug: SlugifierFn = (input, _, { parent }) => {
   const { _type } = parent as {
     _type: string;
   };
 
-  if (_type === "homePage") return "/";
+  if (slugMapper[_type]) return slugMapper[_type];
 
   const prefix = getDocTypePrefix(_type);
 

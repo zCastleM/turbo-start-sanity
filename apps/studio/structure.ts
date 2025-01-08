@@ -4,7 +4,13 @@ import type {
 } from "sanity/structure";
 import { getTitleCase } from "./utils/helper";
 import type { SchemaType, SingletonType } from "./schemaTypes";
-import { File, HomeIcon, type LucideIcon } from "lucide-react";
+import {
+  BookMarked,
+  File,
+  FileText,
+  HomeIcon,
+  type LucideIcon,
+} from "lucide-react";
 
 type Base<T = SchemaType> = {
   type: T;
@@ -46,6 +52,38 @@ const createList = ({ S, type, icon, title }: CreateList) => {
     .icon(icon ?? File);
 };
 
+type CreateIndexList = {
+  S: StructureBuilder;
+  list: Base;
+  index: Base<SingletonType>;
+};
+
+const createIndexList = ({ S, index, list }: CreateIndexList) => {
+  const indexTitle = index.title ?? getTitleCase(index.type);
+  const listTitle = list.title ?? getTitleCase(list.type);
+  return S.listItem()
+    .title(listTitle)
+    .icon(index.icon ?? File)
+    .child(
+      S.list()
+        .title(indexTitle)
+        .items([
+          S.listItem()
+            .title(indexTitle)
+            .icon(index.icon ?? File)
+            .child(
+              S.document()
+                .views([S.view.form()])
+                .schemaType(index.type)
+                .documentId(index.type)
+            ),
+          S.documentTypeListItem(list.type)
+            .title(`${listTitle}s`)
+            .icon(list.icon ?? File),
+        ])
+    );
+};
+
 export const structure = (
   S: StructureBuilder,
   context: StructureResolverContext
@@ -56,6 +94,11 @@ export const structure = (
       createSingleTon({ S, type: "homePage", icon: HomeIcon }),
       S.divider(),
       createList({ S, type: "page" }),
+      createIndexList({
+        S,
+        index: { type: "blogIndex", icon: BookMarked },
+        list: { type: "blog", icon: FileText },
+      }),
       //   createIndexList({
       //     S,
       //     index: { type: "blogIndex", icon: BookMarked },
