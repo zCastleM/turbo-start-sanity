@@ -33,7 +33,6 @@ export default async function RootLayout({
         {(await draftMode()).isEnabled ? (
           <>
             {children}
-            {/* <PreviewBar /> */}
             <VisualEditing
               refresh={async (payload) => {
                 "use server";
@@ -41,14 +40,14 @@ export default async function RootLayout({
                   revalidatePath("/", "layout");
                   return;
                 }
-                const tags = [
-                  payload?.document?.slug?.current,
-                  payload?.document?._id?.startsWith("drafts.")
-                    ? payload?.document?._id.slice(7)
-                    : payload?.document?._id,
-                  payload?.document?._type,
-                ];
-                for (const tag of tags) {
+                const id = payload?.document?._id?.startsWith(
+                  "drafts."
+                )
+                  ? payload?.document?._id.slice(7)
+                  : payload?.document?._id;
+                const slug = payload?.document?.slug?.current;
+                const type = payload?.document?._type;
+                for (const tag of [slug, id, type]) {
                   if (tag) revalidateTag(tag);
                 }
               }}
