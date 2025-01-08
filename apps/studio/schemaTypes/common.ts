@@ -18,3 +18,11 @@ export const pageBuilderField = defineField({
   type: "pageBuilder",
 });
 
+export const iconField = defineField({
+  name: "icon",
+  title: "Icon",
+  options: {
+    storeSvg: true,
+  },
+  type: "iconPicker",
+});

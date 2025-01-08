@@ -3,6 +3,7 @@ import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import { structure } from "./structure";
+import { iconPicker } from "sanity-plugin-icon-picker";
 
 export default defineConfig({
   name: "default",
@@ -16,6 +17,7 @@ export default defineConfig({
       structure,
     }),
     visionTool(),
+    iconPicker(),
   ],
 
   schema: {

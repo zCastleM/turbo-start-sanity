@@ -55,10 +55,11 @@ const components: Partial<PortableTextReactComponents> = {
   hardBreak: () => <br />,
 };
 
-export function RichText({
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export function RichText<T extends Array<any>>({
   richText,
 }: {
-  richText: SanityRichTextProps | null;
+  richText?: T | null;
 }) {
   if (!richText) return null;
 
