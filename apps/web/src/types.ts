@@ -23,5 +23,10 @@ export type SanityImageProps = NonNullable<
 
 
 export type SanityRichTextProps = NonNullable<
-  NonNullable<PagebuilderType<"featureCardsIcon">>["richText"]
+  NonNullable<PagebuilderType<"hero">>["richText"]
+>;
+
+export type SanityRichTextBlock = Extract<
+  NonNullable<NonNullable<SanityRichTextProps>[number]>,
+  { _type: "block" }
 >;

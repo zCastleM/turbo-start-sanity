@@ -145,3 +145,13 @@ export const queryBlogIndexPageData = defineQuery(/* groq */ `
     }
   }
 `);
+
+
+export const queryBlogSlugPageData = defineQuery(/* groq */ `
+  *[_type == "blog" && slug.current == $slug][0]{
+    ...,
+    ${blogAuthorFragment},
+    ${imageFragment},
+    ${richTextFragment},
+  }
+`);

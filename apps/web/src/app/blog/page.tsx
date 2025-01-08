@@ -39,7 +39,14 @@ function FeaturedBlogCard({ blog }: { blog: Blog }) {
         dateTime={new Date(publishedAt ?? new Date()).toISOString()}
         className="block text-sm/6 text-gray-600"
       >
-        {new Date(publishedAt ?? new Date()).toLocaleDateString()}
+        {new Date(blog?.publishedAt ?? new Date()).toLocaleDateString(
+          "en-US",
+          {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }
+        )}
       </time>
       <h2
         id="featured-post"
@@ -79,7 +86,11 @@ function BlogCard({ blog }: { blog: Blog }) {
         >
           {new Date(
             blog?.publishedAt ?? new Date()
-          ).toLocaleDateString()}
+          ).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
         </time>
         <h2 className="mt-2 text-lg font-semibold text-gray-900 group-hover:text-gray-600">
           <span className="absolute inset-0" />
