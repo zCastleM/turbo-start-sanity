@@ -9,11 +9,24 @@ export const hero = defineType({
   type: "object",
   fields: [
     defineField({
+      name: "badge",
+      type: "string",
+      title: "Badge",
+    }),
+    defineField({
       name: "title",
       type: "string",
       title: "Title",
     }),
     richTextField,
+    defineField({
+      name: "image",
+      type: "image",
+      title: "Image",
+      options: {
+        hotspot: true,
+      },
+    }),
     buttonsField,
   ],
   preview: {

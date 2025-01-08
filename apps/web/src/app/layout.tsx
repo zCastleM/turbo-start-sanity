@@ -3,7 +3,11 @@ import { SanityLive } from "@/lib/sanity/live";
 import { VisualEditing } from "next-sanity";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { draftMode } from "next/headers";
+import { Navbar } from "@/components/navbar";
+
 import "@workspace/ui/globals.css";
+
+
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -25,6 +29,7 @@ export default async function RootLayout({
       <body
         className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
       >
+        <Navbar />
         {(await draftMode()).isEnabled ? (
           <>
             {children}

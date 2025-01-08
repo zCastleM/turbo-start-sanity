@@ -1,19 +1,10 @@
 import type { QueryHomePageDataResult } from "@/lib/sanity/sanity.types";
+import { HeroBlock } from "./sections/hero";
 
 export type PageBuilderProps = {
   pageBuilder: NonNullable<QueryHomePageDataResult>["pageBuilder"];
 };
 
-type HeroProps = Extract<
-  NonNullable<
-    NonNullable<QueryHomePageDataResult>["pageBuilder"]
-  >[number],
-  { _type: "hero" }
->;
-
-const HeroBlock = ({ title }: HeroProps) => {
-  return <div>{title}</div>;
-};
 
 export function PageBuilder({ pageBuilder }: PageBuilderProps) {
   if (!pageBuilder) return null;
