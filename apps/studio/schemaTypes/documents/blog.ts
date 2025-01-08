@@ -1,9 +1,8 @@
 import { defineField, defineType } from "sanity";
 import { GROUP, GROUPS } from "../../utils/constant";
-import { createSlug } from "../../utils/slug";
-import { richTextField } from "../common";
-import { seoFields } from "../../utils/seo-fields";
 import { ogFields } from "../../utils/og-fields";
+import { seoFields } from "../../utils/seo-fields";
+import { createSlug } from "../../utils/slug";
 
 export const blog = defineType({
   name: "blog",
@@ -49,12 +48,13 @@ export const blog = defineType({
     select: {
       title: "title",
       media: "image",
+      isPrivate: "seoNoIndex",
       slug: "slug.current",
     },
-    prepare: ({ title, media, slug }) => ({
+    prepare: ({ title, media, slug, isPrivate }) => ({
       title,
       media,
-      subtitle: slug,
+      subtitle: `${isPrivate ? "Private" : "Public"}:- ${slug}`,
     }),
   },
 });
