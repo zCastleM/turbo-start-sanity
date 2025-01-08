@@ -2,6 +2,7 @@ import type { PagebuilderType } from "@/types";
 import { Badge } from "@workspace/ui/components/badge";
 import { SanityButtons } from "../sanity-buttons";
 import { SanityImage } from "../sanity-image";
+import { RichText } from "../richtext";
 
 type HeroBlockProps = PagebuilderType<"hero">;
 
@@ -10,6 +11,7 @@ export function HeroBlock({
   buttons,
   badge,
   image,
+  richText,
 }: HeroBlockProps) {
   return (
     <section className="py-32">
@@ -20,11 +22,7 @@ export function HeroBlock({
             <h1 className="my-6 text-pretty text-4xl font-bold lg:text-6xl">
               {title}
             </h1>
-            <p className="mb-8 max-w-xl text-muted-foreground lg:text-xl">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Elig doloremque mollitia fugiat omnis! Porro facilis quo
-              animi consequatur. Explicabo.
-            </p>
+            <RichText richText={richText} />
             <SanityButtons
               buttons={buttons}
               buttonClassName="w-full sm:w-auto"
@@ -35,7 +33,6 @@ export function HeroBlock({
             <div className="h-96 w-full">
               <SanityImage
                 asset={image}
-                alt="placeholder hero"
                 className="max-h-96 w-full rounded-md object-cover"
               />
             </div>
