@@ -1,8 +1,7 @@
 import type { PagebuilderType } from "@/types";
-import { SanityButtons } from "../sanity-buttons";
-import { Button } from "@workspace/ui/components/button";
 import { Badge } from "@workspace/ui/components/badge";
-import { ArrowDownRight } from "lucide-react";
+import { SanityButtons } from "../sanity-buttons";
+import { SanityImage } from "../sanity-image";
 
 type HeroBlockProps = PagebuilderType<"hero">;
 
@@ -32,17 +31,17 @@ export function HeroBlock({
               className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start"
             />
           </div>
-          <div className="h-96 w-full">
-            <img
-              src="https://shadcnblocks.com/images/block/placeholder-1.svg"
-              alt="placeholder hero"
-              className="max-h-96 w-full rounded-md object-cover"
-            />
-          </div>
+          {image && (
+            <div className="h-96 w-full">
+              <SanityImage
+                asset={image}
+                alt="placeholder hero"
+                className="max-h-96 w-full rounded-md object-cover"
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
-
-
