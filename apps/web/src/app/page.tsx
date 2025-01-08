@@ -1,7 +1,6 @@
+import { PageBuilder } from "@/components/pagebuilder";
 import { sanityFetch } from "@/lib/sanity/live";
 import { queryHomePageData } from "@/lib/sanity/query";
-import { Button } from "@workspace/ui/components/button";
-import { Input } from "@workspace/ui/components/input";
 
 async function fetchHomePageData() {
   return await sanityFetch({
@@ -10,16 +9,12 @@ async function fetchHomePageData() {
 }
 
 export default async function Page() {
-  const homePageData = await fetchHomePageData();
-  return (
-    <div className="flex items-center justify-center min-h-svh">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-bold">
-          {homePageData.data?.title ?? "Hello World"}
-        </h1>
-        <Button size="sm">Button</Button>
-        <Input placeholder="Search" />
-      </div>
-    </div>
-  );
+  const { data: homePageData } = await fetchHomePageData();
+  console.log("🚀 ~ Page ~ homePageData:", homePageData);
+
+  if (!homePageData) {
+    return <div>No home page data</div>;
+  }
+
+  return <PageBuilder pageBuilder={homePageData.pageBuilder} />;
 }
