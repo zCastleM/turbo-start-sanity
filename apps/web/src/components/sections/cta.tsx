@@ -10,7 +10,7 @@ export function CTABlock({
   title,
 }: CTABlockProps) {
   return (
-    <section className="py-32">
+    <section className="">
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex w-full flex-col gap-16 overflow-hidden rounded-lg bg-accent p-8 md:rounded-xl lg:flex-row lg:items-center lg:p-16">
           <div className="flex-1">
