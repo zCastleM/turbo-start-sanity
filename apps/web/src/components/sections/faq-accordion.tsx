@@ -17,7 +17,7 @@ export function FaqAccordion({
 }: FaqAccordionProps) {
   return (
     <section className="">
-      <div className="container mx-auto px-4 md:px-16">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="space-y-4">
           <span className="text-sm text-muted-foreground">
             {eyebrow}

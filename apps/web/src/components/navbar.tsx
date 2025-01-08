@@ -119,7 +119,6 @@ const footerLinks = [
 ];
 
 const navLinks = [
-  { title: "Home", href: "/" },
   { title: "Pricing", href: "/" },
   { title: "Blog", href: "/" },
 ];

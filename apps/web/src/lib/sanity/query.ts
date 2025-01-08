@@ -1,7 +1,5 @@
 import { defineQuery } from "next-sanity";
 
-
-
 // Base fragments for reusable query parts
 const imageFragment = /* groq */ `
   image{
@@ -11,23 +9,6 @@ const imageFragment = /* groq */ `
     "dominantColor": asset->metadata.palette.dominant.background,
   }
 `;
-
-const urlFragment = /* groq */ `
-  "openInNewTab": url.openInNewTab,
-  "href": select(
-    type == "internal" => url.internal->slug.current,
-    type == "external" => url.external,
-    "#"
-  ),
-`;
-// url{
-//   openInNewTab,
-//   "href": select(
-//     type == "internal" => internal->slug.current,
-//     type == "external" => external,
-//     "#"
-//   ),
-// }
 
 const customLinkFragment = /* groq */ `
   ...customLink{
@@ -121,3 +102,10 @@ export const queryHomePageData =
     description,
     ${pageBuilderFragment}
   }`);
+
+export const querySlugPageData = defineQuery(/* groq */ `
+  *[_type == "page" && slug.current == $slug][0]{
+    ...,
+    ${pageBuilderFragment}
+  }
+  `);

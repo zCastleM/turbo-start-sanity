@@ -4,10 +4,8 @@ import { VisualEditing } from "next-sanity";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { draftMode } from "next/headers";
 import { Navbar } from "@/components/navbar";
-
+import { Footer } from "@/components/footer";
 import "@workspace/ui/globals.css";
-
-
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -56,6 +54,7 @@ export default async function RootLayout({
         ) : (
           children
         )}
+        <Footer />
         <SanityLive />
       </body>
     </html>
