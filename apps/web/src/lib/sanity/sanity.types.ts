@@ -108,6 +108,7 @@ export type Cta = {
 
 export type Hero = {
   _type: "hero";
+  badge?: string;
   title?: string;
   richText?: Array<{
     children?: Array<{
@@ -139,6 +140,17 @@ export type Hero = {
     _type: "image";
     _key: string;
   }>;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
   buttons?: Array<{
     _key: string;
   } & Button>;
@@ -424,6 +436,7 @@ export type QueryHomePageDataResult = {
   } | {
     _key: string;
     _type: "hero";
+    badge?: string;
     title?: string;
     richText: Array<{
       children?: Array<{
@@ -462,6 +475,17 @@ export type QueryHomePageDataResult = {
       _key: string;
       markDefs: null;
     }> | null;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
     buttons: Array<{
       text: string | null;
       variant: "default" | "link" | "outline" | "secondary" | null;
