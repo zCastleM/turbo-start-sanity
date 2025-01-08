@@ -1,10 +1,10 @@
 import type { SlugifierFn } from "sanity";
 import slugify from "slugify";
 
+
+
 export const getDocTypePrefix = (type: string) => {
-  if (type === "mainPage" || type === "page") {
-    return "";
-  }
+  if (["page"].includes(type)) return "";
   return type;
 };
 
@@ -12,6 +12,8 @@ export const createSlug: SlugifierFn = (input, _, { parent }) => {
   const { _type } = parent as {
     _type: string;
   };
+
+  if (_type === "homePage") return "/";
 
   const prefix = getDocTypePrefix(_type);
 
