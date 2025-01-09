@@ -14,6 +14,11 @@ export const blogIndex = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
+      name: "description",
+      type: "text",
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
       name: "slug",
       type: "slug",
       group: GROUP.MAIN_CONTENT,

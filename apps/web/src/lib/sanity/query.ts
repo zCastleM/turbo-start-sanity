@@ -134,6 +134,9 @@ export const querySlugPageData = defineQuery(/* groq */ `
 export const queryBlogIndexPageData = defineQuery(/* groq */ `
   *[_type == "blogIndex"][0]{
     _id,
+    title,
+    description,
+    type,
     ${pageBuilderFragment},
     "featuredBlog": featured[0]->{
       ${blogCardFragment}
