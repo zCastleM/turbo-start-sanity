@@ -146,12 +146,54 @@ export const queryBlogIndexPageData = defineQuery(/* groq */ `
   }
 `);
 
-
 export const queryBlogSlugPageData = defineQuery(/* groq */ `
   *[_type == "blog" && slug.current == $slug][0]{
     ...,
     ${blogAuthorFragment},
     ${imageFragment},
     ${richTextFragment},
+  }
+`);
+
+const ogFieldsFragment = /* groq */ `
+  _id,
+  _type,
+  "title": select(
+    defined(ogTitle) => ogTitle,
+    defined(seoTitle) => seoTitle,
+    title
+  ),
+  "description": select(
+    defined(ogDescription) => ogDescription,
+    defined(seoDescription) => seoDescription,
+    description
+  ),
+  "image": image.asset->url + "?w=566&h=566&dpr=2&fit=max",
+  "dominantColor": image.asset->metadata.palette.dominant.background,
+  "seoImage": seoImage.asset->url + "?w=1200&h=630&dpr=2&fit=max", 
+  "date": coalesce(date, _createdAt)
+`;
+
+export const queryHomePageOGData = defineQuery(/* groq */ `
+  *[_type == "homePage" && _id == $id][0]{
+    ${ogFieldsFragment}
+  }
+  `);
+
+export const querySlugPageOGData = defineQuery(/* groq */ `
+  *[_type == "page" && _id == $id][0]{
+    ${ogFieldsFragment}
+  }
+`);
+
+export const queryBlogPageOGData = defineQuery(/* groq */ `
+  *[_type == "blog" && _id == $id][0]{
+    ${ogFieldsFragment}
+  }
+`);
+
+export const queryGenericPageOGData = defineQuery(/* groq */ `
+  *[ defined(slug.current) && _id == $id][0]{
+    ${ogFieldsFragment}
   }
 `);
