@@ -63,6 +63,7 @@ const menuItems = {
   products: [
     {
       title: "Blog",
+      href: "/blog",
       description: "The latest industry news, updates, and info",
       icon: <Book className="size-5 shrink-0" />,
     },
@@ -120,7 +121,7 @@ const footerLinks = [
 
 const navLinks = [
   { title: "Pricing", href: "/" },
-  { title: "Blog", href: "/" },
+  { title: "Blog", href: "/blog" },
 ];
 
 export function Navbar() {
