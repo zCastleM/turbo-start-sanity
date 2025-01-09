@@ -4,6 +4,7 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
 import { structure } from "./structure";
 import { iconPicker } from "sanity-plugin-icon-picker";
+import { presentationUrl } from "./plugins/presentation-url";
 
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
@@ -21,6 +22,7 @@ export default defineConfig({
     }),
     visionTool(),
     iconPicker(),
+    presentationUrl(),
   ],
   schema: {
     types: schemaTypes,
