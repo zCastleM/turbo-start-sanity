@@ -18,9 +18,10 @@ export function SanityImage({
   if (!asset?.asset) return null;
   const dimensions = getImageDimensions(asset.asset);
 
+
   const url = urlFor({ ...asset, _id: asset.asset._ref })
-    .width(dimensions.width)
-    .height(dimensions.height)
+    .width(width ? Number(width) : dimensions.width)
+    .height(height ? Number(height) : dimensions.height)
     .url();
 
   return (
