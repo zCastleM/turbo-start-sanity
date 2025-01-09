@@ -5,21 +5,23 @@ import {schemaTypes} from './schemaTypes'
 import { structure } from "./structure";
 import { iconPicker } from "sanity-plugin-icon-picker";
 
+
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
+const dataset = process.env.SANITY_STUDIO_DATASET ?? "production";
+const title = process.env.SANITY_STUDIO_TITLE ?? "";
+
 export default defineConfig({
   name: "default",
-  title: "template-sanity",
-
-  projectId: "rqdz6bx6",
-  dataset: "production",
-
+  title: title,
+  projectId: projectId,
+  dataset: dataset,
   plugins: [
     structureTool({
-      structure,
+      structure: structure,
     }),
     visionTool(),
     iconPicker(),
   ],
-
   schema: {
     types: schemaTypes,
   },
