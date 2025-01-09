@@ -1,31 +1,47 @@
-# shadcn/ui monorepo template
+# Next.js Monorepo with Sanity CMS
 
-This template is for creating a monorepo with shadcn/ui.
+A modern, full-stack monorepo template built with Next.js App Router, Sanity CMS, Shadcn UI, and TurboRepo.
 
-## Usage
+## Features
 
-```bash
-pnpm dlx shadcn@latest init
-```
+### Monorepo Structure
+- Apps: web (Next.js frontend) and studio (Sanity Studio)
+- Shared packages: UI components, TypeScript config, ESLint config
+- Turborepo for build orchestration and caching
 
-## Adding components
+### Frontend (Web)
+- Next.js App Router with TypeScript
+- Shadcn UI components with Tailwind CSS
+- Server Components and Server Actions
+- SEO optimization with metadata
+- Blog system with rich text editor
+- Table of contents generation
+- Responsive layouts
 
-To add components to your app, run the following command at the root of your `web` app:
+### Content Management (Studio)
+- Sanity Studio v3
+- Custom document types (Blog, FAQ, Pages)
+- Visual editing integration
+- Structured content with schemas
+- Live preview capabilities
+- Asset management
 
-```bash
-pnpm dlx shadcn@latest add button -c apps/web
-```
 
-This will place the ui components in the `packages/ui/src/components` directory.
+### Getting Started
 
-## Tailwind
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
 
-Your `tailwind.config.ts` and `globals.css` are already set up to use the components from the `ui` package.
+2. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   ```
 
-## Using components
+3. Start development servers:
+   ```bash
+   pnpm dev
+   ```
 
-To use the components in your app, import them from the `ui` package.
-
-```tsx
-import { Button } from "@workspace/ui/components/ui/button"
-```
+### Project Structure
