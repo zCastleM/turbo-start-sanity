@@ -11,7 +11,8 @@ import { resolve } from "./resolve-presentation-document";
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
 const dataset = process.env.SANITY_STUDIO_DATASET ?? "production";
 const title = process.env.SANITY_STUDIO_TITLE ?? "";
-
+const presentationOriginUrl =
+  process.env.SANITY_STUDIO_PRESENTATION_URL ?? "";
 
 export default defineConfig({
   name: "default",
@@ -27,10 +28,7 @@ export default defineConfig({
     presentationTool({
       resolve: resolve,
       previewUrl: {
-        origin:
-          window.location.hostname === "localhost"
-            ? "http://localhost:3000"
-            : "https://template.roboto.studio",
+        origin: presentationOriginUrl,
         previewMode: {
           enable: "/api/presentation-draft",
         },
