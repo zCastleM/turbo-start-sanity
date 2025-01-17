@@ -76,7 +76,7 @@ async function createData() {
 
   console.log("🏠 Generating home page...");
   const homePage = await getMockHomePageData(client);
-  transaction.create(homePage);
+  transaction.createIfNotExists(homePage);
   updateProgressBar(++currentStep, totalSteps);
 
   console.log("\n📄 Generating regular pages...");
@@ -93,7 +93,7 @@ async function createData() {
   for (const page of blogs) {
     transaction.create(page);
   }
-  transaction.create(blogIndexPage);
+  transaction.createIfNotExists(blogIndexPage);
   console.log(`✅ Created ${blogs.length} blog posts`);
   updateProgressBar(++currentStep, totalSteps);
 
