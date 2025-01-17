@@ -13,7 +13,7 @@ export default defineCliConfig({
   },
   studioHost:
     host && host !== "main"
-      ? `${host}-template-roboto`
-      : "template-roboto",
+      ? `${host}-roboto-next-sanity-template`
+      : "roboto-next-sanity-template",
   autoUpdates: false,
 });
