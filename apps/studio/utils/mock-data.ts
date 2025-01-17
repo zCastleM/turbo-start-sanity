@@ -354,8 +354,8 @@ async function generateMockPagesWithRetry<T>(
   client: SanityClient,
   generatePage: (client: SanityClient) => Promise<T>,
   {
-    min = 5,
-    max = 10,
+    min = 2,
+    max = 5,
     maxRetries = 3,
   }: {
     min?: number;

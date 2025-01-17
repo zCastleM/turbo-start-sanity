@@ -11,15 +11,7 @@ import {
 
 const client = getCliClient();
 
-function updateProgressBar(current: number, total: number) {
-  const width = 30;
-  const progress = Math.round((current / total) * width);
-  const filled = "█".repeat(progress);
-  const empty = "░".repeat(width - progress);
-  const percentage = Math.round((current / total) * 100);
-  // Use console.log instead of process.stdout methods which may not be available
-  console.log(`Progress: [${filled}${empty}] ${percentage}%`);
-}
+
 async function removePostinstallScript() {
   try {
     const packageJson = await fs.readFile("package.json", "utf8");
@@ -62,9 +54,7 @@ async function removePostinstallScript() {
 
 async function createData() {
   console.log("🔍 Checking if data exists...");
-  const totalSteps = 5;
-  let currentStep = 0;
-  updateProgressBar(++currentStep, totalSteps);
+
   const isDataExists = await checkIfDataExists(client);
   if (isDataExists) {
     console.log("⚠️ Data already exists in dataset");
@@ -77,7 +67,6 @@ async function createData() {
   console.log("🏠 Generating home page...");
   const homePage = await getMockHomePageData(client);
   transaction.createIfNotExists(homePage);
-  updateProgressBar(++currentStep, totalSteps);
 
   console.log("\n📄 Generating regular pages...");
   const pages = await generateMockPages(client);
@@ -85,8 +74,6 @@ async function createData() {
     transaction.create(page);
   }
   console.log(`✅ Created ${pages.length} pages`);
-  updateProgressBar(++currentStep, totalSteps);
-
   console.log("\n📚 Generating blog posts...");
   const { blogIndexPage, blogs } =
     await generateMockBlogPages(client);
@@ -95,7 +82,6 @@ async function createData() {
   }
   transaction.createIfNotExists(blogIndexPage);
   console.log(`✅ Created ${blogs.length} blog posts`);
-  updateProgressBar(++currentStep, totalSteps);
 
   console.log("\n💾 Committing transaction...");
   await transaction.commit();
@@ -106,7 +92,6 @@ async function createData() {
 
   console.log("\n🧹 Removing postinstall script...");
   await removePostinstallScript();
-  updateProgressBar(++currentStep, totalSteps);
   console.log("✅ Successfully removed postinstall script");
 }
 
