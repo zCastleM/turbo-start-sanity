@@ -1,7 +1,7 @@
 name: Deploy Sanity Studio
 on:
   push:
-    branches: [main]
+    # branches: [main]
     paths:
       - "apps/studio/**"
       - ".github/workflows/deploy-sanity.yml"
@@ -20,6 +20,7 @@ jobs:
       SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
       SANITY_STUDIO_TITLE: ${{ secrets.SANITY_STUDIO_TITLE }}
       SANITY_STUDIO_PRESENTATION_URL: ${{ secrets.SANITY_STUDIO_PRESENTATION_URL }}
+      HOST_NAME: ${{ github.head_ref || github.ref_name }}  
 
     steps:
       - name: Checkout repository
