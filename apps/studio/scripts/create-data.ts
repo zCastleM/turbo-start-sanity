@@ -17,11 +17,8 @@ function updateProgressBar(current: number, total: number) {
   const filled = "█".repeat(progress);
   const empty = "░".repeat(width - progress);
   const percentage = Math.round((current / total) * 100);
-  process.stdout.clearLine(0);
-  process.stdout.cursorTo(0);
-  process.stdout.write(
-    `Progress: [${filled}${empty}] ${percentage}%`
-  );
+  // Use console.log instead of process.stdout methods which may not be available
+  console.log(`Progress: [${filled}${empty}] ${percentage}%`);
 }
 async function removePostinstallScript() {
   try {
