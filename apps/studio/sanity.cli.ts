@@ -1,17 +1,9 @@
-import {
-  defineCliConfig,
-  getStudioEnvironmentVariables,
-} from "sanity/cli";
+import { defineCliConfig } from "sanity/cli";
 
-const { projectId, dataset } = getStudioEnvironmentVariables();
-const title = process.env.SANITY_STUDIO_TITLE;
-const presentationUrl = process.env.SANITY_STUDIO_PRESENTATION_URL;
-console.log("🚀 ~ projectId, dataset:", {
-  projectId,
-  dataset,
-  title,
-  presentationUrl,
-});
+const projectId = process.env.SANITY_STUDIO_PROJECT_ID;
+const dataset = process.env.SANITY_STUDIO_DATASET;
+// const title = process.env.SANITY_STUDIO_TITLE;
+// const presentationUrl = process.env.SANITY_STUDIO_PRESENTATION_URL;
 
 export default defineCliConfig({
   api: {
