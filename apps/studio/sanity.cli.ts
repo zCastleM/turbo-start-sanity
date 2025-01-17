@@ -4,6 +4,14 @@ import {
 } from "sanity/cli";
 
 const { projectId, dataset } = getStudioEnvironmentVariables();
+const title = process.env.SANITY_STUDIO_TITLE;
+const presentationUrl = process.env.SANITY_STUDIO_PRESENTATION_URL;
+console.log("🚀 ~ projectId, dataset:", {
+  projectId,
+  dataset,
+  title,
+  presentationUrl,
+});
 
 export default defineCliConfig({
   api: {
