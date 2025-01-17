@@ -18,6 +18,12 @@ export const page = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
+      name: "description",
+      type: "text",
+      title: "Description",
+      group: GROUP.MAIN_CONTENT,
+    }),
+    defineField({
       name: "slug",
       type: "slug",
       title: "Slug",
@@ -37,4 +43,17 @@ export const page = defineType({
     ...seoFields,
     ...ogFields,
   ],
+  preview: {
+    select: {
+      title: "title",
+      description: "description",
+      slug: "slug.current",
+      media: "image",
+    },
+    prepare: ({ title, description, slug, media }) => ({
+      title,
+      subtitle: description ?? slug,
+      media,
+    }),
+  },
 });

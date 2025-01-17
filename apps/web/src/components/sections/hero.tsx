@@ -17,9 +17,9 @@ export function HeroBlock({
     <section className="">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid items-center gap-8 lg:grid-cols-2">
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          <div className="flex flex-col gap-4 items-center justify-center text-center lg:items-start lg:text-left">
             <Badge variant="outline">{badge}</Badge>
-            <h1 className="my-6 text-pretty text-4xl font-bold lg:text-6xl">
+            <h1 className="text-pretty text-4xl font-bold lg:text-6xl">
               {title}
             </h1>
             <RichText richText={richText} />

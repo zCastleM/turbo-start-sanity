@@ -1,6 +1,6 @@
 import type { QueryBlogIndexPageDataResult } from "@/lib/sanity/sanity.types";
 import { Badge } from "@workspace/ui/components/badge";
-import { Link } from "lucide-react";
+import Link from "next/link";
 import { SanityImage } from "./sanity-image";
 
 type Blog = NonNullable<
