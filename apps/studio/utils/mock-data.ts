@@ -350,36 +350,76 @@ export async function generateMockBlogPage(client: SanityClient) {
   };
 }
 
-export async function generateMockPages(
+async function generateMockPagesWithRetry<T>(
   client: SanityClient,
+  generatePage: (client: SanityClient) => Promise<T>,
   {
     min = 5,
     max = 10,
+    maxRetries = 3,
   }: {
     min?: number;
     max?: number;
+    maxRetries?: number;
   } = {}
 ) {
-  const length = faker.number.int({ min, max });
-  const pages = await Promise.all(
-    Array.from({ length }, () => generateMockSlugPageData(client))
-  );
+  const count = faker.number.int({ min, max });
+  const pages: T[] = [];
+
+  for (let i = 0; i < count; i++) {
+    let retries = 0;
+    let success = false;
+
+    while (!success && retries < maxRetries) {
+      try {
+        const page = await generatePage(client);
+        pages.push(page);
+        success = true;
+      } catch (error) {
+        retries++;
+        if (retries === maxRetries) {
+          console.error(
+            `Failed to generate page after ${maxRetries} retries:`,
+            error
+          );
+          throw error;
+        }
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1000 * retries)
+        );
+      }
+    }
+  }
+
   return pages;
+}
+
+export async function generateMockPages(
+  client: SanityClient,
+  options?: {
+    min?: number;
+    max?: number;
+    maxRetries?: number;
+  }
+) {
+  return generateMockPagesWithRetry(
+    client,
+    generateMockSlugPageData,
+    options
+  );
 }
 
 export async function generateMockBlogPages(
   client: SanityClient,
-  {
-    min = 5,
-    max = 10,
-  }: {
+  options?: {
     min?: number;
     max?: number;
-  } = {}
+    maxRetries?: number;
+  }
 ) {
-  const count = faker.number.int({ min, max });
-  const pages = await Promise.all(
-    Array.from({ length: count }, () => generateMockBlogPage(client))
+  return generateMockPagesWithRetry(
+    client,
+    generateMockBlogPage,
+    options
   );
-  return pages;
 }
