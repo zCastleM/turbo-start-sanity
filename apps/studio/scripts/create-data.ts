@@ -7,47 +7,46 @@ import {
   generateMockPages,
   getMockHomePageData,
 } from "../utils/mock-data";
-import ora from "ora";
 
 const client = getCliClient();
 
 async function createData() {
-  const spinner = ora("🔍 Checking if data exists...").start();
+  console.log("🔍 Checking if data exists...");
   const isDataExists = await checkIfDataExists(client);
   if (isDataExists) {
-    spinner.info("⚠️ Data already exists in dataset");
+    console.log("⚠️ Data already exists in dataset");
     return;
   }
 
-  spinner.info("📝 Creating new data...");
+  console.log("📝 Creating new data...");
   const transaction = client.transaction();
 
-  spinner.info("🏠 Generating home page...");
+  console.log("🏠 Generating home page...");
   const homePage = await getMockHomePageData(client);
   transaction.create(homePage);
 
-  spinner.info("📄 Generating regular pages...");
+  console.log("📄 Generating regular pages...");
   const pages = await generateMockPages(client);
   for (const page of pages) {
     transaction.create(page);
   }
-  spinner.succeed(`✅ Created ${pages.length} pages`);
+  console.log(`✅ Created ${pages.length} pages`);
 
-  spinner.info("📚 Generating blog posts...");
+  console.log("📚 Generating blog posts...");
   const blogPages = await generateMockBlogPages(client);
 
   for (const page of blogPages) {
     transaction.create(page);
   }
-  spinner.succeed(`✅ Created ${blogPages.length} blog posts`);
+  console.log(`✅ Created ${blogPages.length} blog posts`);
 
-  spinner.info("💾 Committing transaction...");
+  console.log("💾 Committing transaction...");
   await transaction.commit();
-  spinner.succeed("✨ Successfully created all content!");
+  console.log("✨ Successfully created all content!");
 
-  spinner.info("\n📊 Dataset Information:");
-  spinner.info(`🆔 Project ID: ${client.config().projectId}`);
-  spinner.info(`📁 Dataset: ${client.config().dataset}`);
+  console.log("\n📊 Dataset Information:");
+  console.log(`🆔 Project ID: ${client.config().projectId}`);
+  console.log(`📁 Dataset: ${client.config().dataset}`);
 
   console.log(
     "\n\x1b[34m┌────────────────────────────────────────────┐\x1b[0m"
