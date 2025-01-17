@@ -40,16 +40,11 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      # Cache the pnpm store directory
       - name: Setup pnpm cache
         uses: actions/cache@v3
-        # with:
-        #   path: |
-        #     ~/.pnpm-store
-        #     **/node_modules
-        #   key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-        #   restore-keys: |
-        #     ${{ runner.os }}-pnpm-
+        with:
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
