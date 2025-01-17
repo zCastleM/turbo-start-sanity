@@ -88,11 +88,13 @@ async function createData() {
   updateProgressBar(++currentStep, totalSteps);
 
   console.log("\n📚 Generating blog posts...");
-  const blogPages = await generateMockBlogPages(client);
-  for (const page of blogPages) {
+  const { blogIndexPage, blogs } =
+    await generateMockBlogPages(client);
+  for (const page of blogs) {
     transaction.create(page);
   }
-  console.log(`✅ Created ${blogPages.length} blog posts`);
+  transaction.create(blogIndexPage);
+  console.log(`✅ Created ${blogs.length} blog posts`);
   updateProgressBar(++currentStep, totalSteps);
 
   console.log("\n💾 Committing transaction...");

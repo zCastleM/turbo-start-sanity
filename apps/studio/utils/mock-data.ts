@@ -199,7 +199,7 @@ async function generateFAQBlock(client: SanityClient) {
 
 export async function checkIfDataExists(client: SanityClient) {
   const data = await client.fetch(`{
-    "homePage": defined(*[_type == 'homePage'][0]._id),
+    "homePage": defined(*[_type == 'homePage' && _id == 'homePage'][0]._id),
   }`);
   if (data.homePage) {
     return true;
@@ -215,7 +215,7 @@ export async function getMockHomePageData(client: SanityClient) {
     generateFAQBlock(client),
   ]);
   const homePage = {
-    _id: faker.string.uuid(),
+    _id: "homePage",
     _type: "homePage" as const,
     title: "Home Page",
     description: faker.lorem.paragraph(),
@@ -402,11 +402,36 @@ export async function generateMockPages(
     maxRetries?: number;
   }
 ) {
-  return generateMockPagesWithRetry(
+  return await generateMockPagesWithRetry(
     client,
     generateMockSlugPageData,
     options
   );
+}
+
+export function generateBlogIndexPage(featuredBlog: string) {
+  return {
+    _id: "blogIndex",
+    _type: "blogIndex" as const,
+    title: "Insights & Updates",
+    description:
+      "Discover our latest blogs, industry insights, and expert perspectives on technology, development, and digital innovation. Stay informed with in-depth analysis and practical guides.",
+    slug: {
+      type: "slug",
+      current: "/blog",
+    },
+    ...(featuredBlog
+      ? {
+          featured: [
+            {
+              _type: "reference",
+              _key: faker.string.uuid(),
+              _ref: featuredBlog,
+            },
+          ],
+        }
+      : {}),
+  };
 }
 
 export async function generateMockBlogPages(
@@ -417,9 +442,16 @@ export async function generateMockBlogPages(
     maxRetries?: number;
   }
 ) {
-  return generateMockPagesWithRetry(
+  const blogs = await generateMockPagesWithRetry(
     client,
     generateMockBlogPage,
     options
   );
+  const featuredBlog = faker.helpers.arrayElement(blogs);
+  const blogIndexPage = generateBlogIndexPage(featuredBlog._id);
+
+  return {
+    blogIndexPage,
+    blogs,
+  };
 }

@@ -10,7 +10,6 @@ export type PageBuilderProps = {
 
 export function PageBuilder({ pageBuilder }: PageBuilderProps) {
   if (!pageBuilder) return null;
-  console.log("🚀 ~ PageBuilder ~ pageBuilder:", pageBuilder);
 
   return (
     <main className="flex flex-col gap-16 my-16">

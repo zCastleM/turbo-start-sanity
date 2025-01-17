@@ -116,7 +116,7 @@ const pageBuilderFragment = /* groq */ `
 `;
 
 export const queryHomePageData =
-  defineQuery(/* groq */ `*[_type == "homePage"][0]{
+  defineQuery(/* groq */ `*[_type == "homePage" && _id == "homePage"][0]{
     _id,
     _type,
     title,
