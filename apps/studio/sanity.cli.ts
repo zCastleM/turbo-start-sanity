@@ -11,10 +11,9 @@ export default defineCliConfig({
     projectId: projectId,
     dataset: dataset,
   },
-  studioHost: host ? `${host}-template-roboto` : "template-roboto",
-  /**
-   * Enable auto-updates for studios.
-   * Learn more at https://www.sanity.io/docs/cli#auto-updates
-   */
-  autoUpdates: true,
+  studioHost:
+    host && host !== "main"
+      ? `${host}-template-roboto`
+      : "template-roboto",
+  autoUpdates: false,
 });
