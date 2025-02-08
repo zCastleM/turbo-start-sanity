@@ -3,6 +3,7 @@ import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
 import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
+import { aiImagePlugin } from "sanity-plugin-ai-image";
 import {
   unsplashAssetSource,
   unsplashImageAsset,
@@ -49,17 +50,18 @@ export default defineConfig({
     media(),
     presentationUrl(),
     unsplashImageAsset(),
+    aiImagePlugin(),
   ],
 
   form: {
     image: {
-      assetSources: (previousAssetSources) => {
-        return previousAssetSources.filter(
-          (assetSource) =>
-            assetSource === mediaAssetSource ||
-            assetSource === unsplashAssetSource,
-        );
-      },
+      // assetSources: (previousAssetSources) => {
+      //   return previousAssetSources.filter(
+      //     (assetSource) =>
+      //       assetSource === mediaAssetSource ||
+      //       assetSource === unsplashAssetSource,
+      //   );
+      // },
     },
   },
   document: {

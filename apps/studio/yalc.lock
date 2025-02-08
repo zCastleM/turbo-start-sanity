@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "packages": {
+    "sanity-plugin-ai-image": {
+      "signature": "3ab8f257e726f8932bd7e21119cab657",
+      "link": true,
+      "replaced": "file:.yalc/sanity-plugin-ai-image"
+    }
+  }
+}

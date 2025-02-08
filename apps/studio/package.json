@@ -12,7 +12,7 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "type": "sanity schema extract && sanity typegen generate --enforce-required-fields",
-    "postinstall": "sanity exec scripts/create-data.ts --with-user-token"
+    "postinstalls": "sanity exec scripts/create-data.ts --with-user-token"
   },
   "keywords": [
     "sanity"
@@ -30,6 +30,7 @@
     "react-is": "^19.0.0",
     "react-rx": "^4.1.18",
     "sanity": "^3.72.1",
+    "sanity-plugin-ai-image": "link:.yalc/sanity-plugin-ai-image",
     "sanity-plugin-asset-source-unsplash": "^3.0.3",
     "sanity-plugin-icon-picker": "^3.3.0",
     "sanity-plugin-media": "^2.3.2",

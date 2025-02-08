@@ -1,0 +1,58 @@
+{
+  "name": "sanity-plugin-ai-image",
+  "version": "1.0.0",
+  "description": "generate ai image for sanity",
+  "keywords": [
+    "sanity",
+    "sanity-plugin"
+  ],
+  "homepage": "https://github.com/robotostudio/sanity-plugin-ai-image#readme",
+  "bugs": {
+    "url": "https://github.com/robotostudio/sanity-plugin-ai-image/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/robotostudio/sanity-plugin-ai-image.git"
+  },
+  "license": "MIT",
+  "author": "Hrithik Prasad <hrithik@roboto.studio>",
+  "sideEffects": false,
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "sanity.json",
+    "src",
+    "v2-incompatible.js"
+  ],
+  "scripts": {
+    "build": "plugin-kit verify-package --silent && pkg-utils build --strict --check --clean",
+    "format": "prettier --write --cache --ignore-unknown .",
+    "link-watch": "plugin-kit link-watch",
+    "lint": "eslint .",
+    "prepublishOnly": "npm run build",
+    "watch": "pkg-utils watch --strict"
+  },
+  "dependencies": {
+    "@sanity/icons": "^3.5.7",
+    "@sanity/incompatible-plugin": "^1.0.5",
+    "@sanity/ui": "^2.11.10"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "sanity": "^3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "yalcSig": "3ab8f257e726f8932bd7e21119cab657"
+}
