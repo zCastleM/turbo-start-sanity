@@ -68,20 +68,18 @@ export async function POST(request: Request) {
 
     const dimension = getDimensionImage(size, aspectRatio);
 
-    const images = [];
-
-    // const { images } = await generateImage({
-    //   model: replicate.image(model, {
-    //     maxImagesPerCall: numberOfImages,
-    //   }),
-    //   prompt,
-    //   n: numberOfImages,
-    //   size: dimension,
-    //   aspectRatio,
-    //   ...(negativePrompt && {
-    //     negative_prompt: negativePrompt,
-    //   }),
-    // });
+    const { images } = await generateImage({
+      model: replicate.image(model, {
+        maxImagesPerCall: numberOfImages,
+      }),
+      prompt,
+      n: numberOfImages,
+      size: dimension,
+      aspectRatio,
+      ...(negativePrompt && {
+        negative_prompt: negativePrompt,
+      }),
+    });
 
     // Prepare response
     const response = {
