@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "sanity-plugin-ai-image": {
-      "signature": "8b09b1ee851668aa3560dabf04e03fc2",
+      "signature": "8792a04016fa7f1d1c092d5c0486b18b",
       "link": true,
       "replaced": "file:.yalc/sanity-plugin-ai-image"
     }

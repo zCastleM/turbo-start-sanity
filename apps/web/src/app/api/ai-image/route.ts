@@ -1,5 +1,5 @@
 import { createReplicate } from "@ai-sdk/replicate";
-import { experimental_generateImage as generateImage } from "ai";
+import { experimental_generateImage as generateImage, RetryError } from "ai";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -17,20 +17,34 @@ const GenerateImageSchema = z.object({
     .optional()
     .default("black-forest-labs/flux-schnell"),
   size: z
-    .enum(["512x512", "768x768", "1024x1024", "1536x1536"])
+    .enum(["small", "medium", "large", "extra-large"])
     .optional()
-    .default("768x768"),
+    .default("medium"),
   numberOfImages: z.number().min(1).max(4).optional().default(1),
 });
 
-interface GenerateImageResponse {
-  images: string[];
-  metadata: {
-    prompt: string;
-    aspectRatio: string;
-    model: string;
-    generatedAt: string;
+function getDimensionImage(size: string, aspect: string) {
+  const aspectMap = {
+    "1:1": { width: 1024, height: 1024 },
+    "16:9": { width: 1024, height: 576 },
+    "4:3": { width: 1024, height: 768 },
+    "3:2": { width: 1024, height: 683 },
   };
+
+  const sizeMap = {
+    small: 0.5,
+    medium: 1,
+    large: 1.5,
+    "extra-large": 2,
+  };
+
+  const baseSize = aspectMap[aspect as keyof typeof aspectMap];
+  const scale = sizeMap[size as keyof typeof sizeMap];
+
+  const width = Math.round(baseSize.width * scale);
+  const height = Math.round(baseSize.height * scale);
+
+  return `${width}x${height}` as const;
 }
 
 export async function POST(request: Request) {
@@ -52,24 +66,29 @@ export async function POST(request: Request) {
       apiToken: process.env.REPLICATE_API_TOKEN ?? "",
     });
 
-    const { images } = await generateImage({
-      model: replicate.image(model, {
-        maxImagesPerCall: numberOfImages,
-      }),
-      prompt,
-      n: numberOfImages,
-      size,
-      aspectRatio,
-      ...(negativePrompt && {
-        negative_prompt: negativePrompt,
-      }),
-    });
+    const dimension = getDimensionImage(size, aspectRatio);
+
+    const images = [];
+
+    // const { images } = await generateImage({
+    //   model: replicate.image(model, {
+    //     maxImagesPerCall: numberOfImages,
+    //   }),
+    //   prompt,
+    //   n: numberOfImages,
+    //   size: dimension,
+    //   aspectRatio,
+    //   ...(negativePrompt && {
+    //     negative_prompt: negativePrompt,
+    //   }),
+    // });
 
     // Prepare response
-    const response: GenerateImageResponse = {
+    const response = {
       images: images.map((img) => img.base64),
       metadata: {
         prompt,
+        dimension,
         aspectRatio,
         model,
         generatedAt: new Date().toISOString(),
@@ -87,7 +106,10 @@ export async function POST(request: Request) {
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: "Invalid input", details: error.errors },
+        {
+          error: "Invalid input",
+          details: error?.errors?.map((err) => err?.message).join(" "),
+        },
         { status: 400 },
       );
     }
