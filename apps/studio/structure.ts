@@ -134,83 +134,148 @@ const createNestedList = async ({
     },
   );
 
-  interface GroupedPages {
-    [key: string]: {
-      name: string;
-      parent: SanityPage | undefined;
-      children: SanityPage[];
-    };
+  // Safely handle empty results
+  if (!pages || !Array.isArray(pages) || pages.length === 0) {
+    return S.listItem()
+      .title(list.title ?? getTitleCase(list.type))
+      .icon(list.icon ?? FolderIcon)
+      .child(
+        S.list()
+          .title(list.title ?? getTitleCase(list.type))
+          .items([])
+          .canHandleIntent(
+            (intent, params) => intent === "create" && params.type === "page",
+          ),
+      );
   }
 
-  const rootPages = pages.filter(
-    (p) =>
-      p.slug.split("/").filter(Boolean).length === 1 &&
-      !pages.some((child) => child.slug.startsWith(`${p.slug}/`)),
-  );
-  const nestedPages = pages.filter(
-    (p) => p.slug.split("/").filter(Boolean).length > 1,
-  );
-  const grouped = nestedPages.reduce<GroupedPages>((acc, page) => {
-    const pathParts = page.slug.split("/").filter(Boolean);
-    if (pathParts.length < 2) return acc;
+  // Normalize slugs to ensure consistent format
+  const normalizedPages = pages.map((page) => ({
+    ...page,
+    slug: page.slug
+      ? page.slug.startsWith("/")
+        ? page.slug
+        : `/${page.slug}`
+      : "/",
+    title: page.title || "Untitled Page",
+  }));
 
-    const [first] = pathParts;
-    const parent = pages.find((p) => p.slug === `/${first}`);
-    if (!acc[first]) {
-      acc[first] = {
-        name: first,
-        parent,
-        children: [],
-      };
+  // Identify parent-child relationships
+  const pageHierarchy: Record<
+    string,
+    { parent: SanityPage | null; children: SanityPage[] }
+  > = {};
+
+  // First, identify all potential parent paths
+  for (const page of normalizedPages) {
+    const segments = page.slug.split("/").filter(Boolean);
+    if (segments.length === 1) {
+      const path = `/${segments[0]}`;
+      if (!pageHierarchy[path]) {
+        pageHierarchy[path] = { parent: page, children: [] };
+      } else {
+        pageHierarchy[path].parent = page;
+      }
     }
-    acc[first].children.push(page);
-    return acc;
-  }, {});
+  }
 
+  // Then, identify all children
+  for (const page of normalizedPages) {
+    const segments = page.slug.split("/").filter(Boolean);
+    if (segments.length > 1) {
+      const parentPath = `/${segments[0]}`;
+      if (!pageHierarchy[parentPath]) {
+        pageHierarchy[parentPath] = { parent: null, children: [] };
+      }
+      pageHierarchy[parentPath].children.push(page);
+    }
+  }
+
+  // Create list items - only create folders for parents with children
+  const listItems = [];
+  const standalonePages = [];
+
+  for (const [path, { parent, children }] of Object.entries(pageHierarchy)) {
+    // If this page has children, create a folder
+    if (children.length > 0) {
+      const parentSlug = path.substring(1);
+      const parentTitle = parent?.title || getTitleCase(parentSlug);
+
+      listItems.push(
+        S.listItem()
+          .title(parentTitle)
+          .icon(FolderIcon)
+          .child(
+            S.list()
+              .title(parentTitle)
+              .items([
+                // Parent page document (if it exists)
+                ...(parent
+                  ? [
+                      S.documentListItem()
+                        .id(parent._id)
+                        .schemaType("page")
+                        .title("Overview"),
+                    ]
+                  : []),
+
+                // Divider if we have both parent and children
+                ...(parent && children.length > 0 ? [S.divider()] : []),
+
+                // Child pages
+                ...children.map((child) =>
+                  S.documentListItem()
+                    .id(child._id)
+                    .schemaType("page")
+                    .title(child.title || "Untitled"),
+                ),
+              ])
+              .initialValueTemplates([
+                S.initialValueTemplateItem("create-child-page", {
+                  title: "Create Child Page",
+                  slug: path || "",
+                }),
+              ]),
+          ),
+      );
+    }
+    // If this page has no children, add it as a standalone page
+    else if (parent) {
+      standalonePages.push(parent);
+    }
+  }
+
+  // Add any other pages that aren't in the hierarchy
+  for (const page of normalizedPages) {
+    const segments = page.slug.split("/").filter(Boolean);
+    if (segments.length === 1) {
+      const path = `/${segments[0]}`;
+      // If this page isn't a parent in our hierarchy, add it as standalone
+      if (!pageHierarchy[path]) {
+        standalonePages.push(page);
+      }
+    }
+  }
+
+  // Create the main list item
   return S.listItem()
     .title(list.title ?? getTitleCase(list.type))
     .icon(list.icon ?? FolderIcon)
     .child(
       S.list()
+        .initialValueTemplates([])
         .title(list.title ?? getTitleCase(list.type))
         .items([
+          // Add all standalone pages
+          ...listItems,
           S.divider(),
-          ...Object.values(grouped).map((g) =>
-            S.listItem()
-              .title(getTitleCase(g.name))
-              .icon(FolderIcon)
-              .child(
-                S.documentList()
-                  .title(g.name)
-                  .filter(
-                    `_type == "page" && string::startsWith(slug.current, "${g.parent?.slug}")`,
-                  )
-                  .defaultOrdering([{ field: "_createdAt", direction: "desc" }])
-                  .initialValueTemplates([
-                    {
-                      id: "create-child-page",
-                      title: "Create Child Page",
-                      schemaType: "page",
-                      parameters: {
-                        slug: g.parent?.slug || "",
-                        title: getTitleCase(g.name),
-                      },
-                      templateId: "create-child-page",
-                      type: "initialValueTemplateItem",
-                    },
-                    // S.initialValueTemplateItem("create-child-page", {
-                    S.initialValueTemplateItem("create-child-paged-list", {
-                      parentId: g.parent?._id || "",
-                      title: `${getTitleCase(g.name)} List`,
-                    }),
-                  ])
-                  .schemaType("page"),
-              ),
+          ...standalonePages.map((page) =>
+            S.documentListItem()
+              .id(page._id)
+              .schemaType("page")
+              .title(page.title),
           ),
-          S.divider(),
-          ...rootPages.map((p) =>
-            S.documentListItem().schemaType("page").title(p.title).id(p._id),
-          ),
+          // Add all the parent folders with their children
         ]),
     );
 };
