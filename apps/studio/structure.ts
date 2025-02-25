@@ -3,6 +3,7 @@ import {
   CogIcon,
   File,
   FileText,
+  FolderIcon,
   HomeIcon,
   type LucideIcon,
   MessageCircleQuestion,
@@ -88,7 +89,133 @@ const createIndexList = ({ S, index, list }: CreateIndexList) => {
     );
 };
 
-export const structure = (
+type CreateNestedList = {
+  S: StructureBuilder;
+  list: Base;
+  index: Base;
+  context: StructureResolverContext;
+};
+
+// First, let's add an interface for the Page type
+interface SanityPage {
+  _id: string;
+  _type: string;
+  title: string;
+  slug: string;
+}
+
+interface PageTemplate {
+  title: string;
+  slug: string;
+}
+
+const createNestedList = async ({
+  S,
+  list,
+  index,
+  context,
+}: CreateNestedList) => {
+  const { getClient } = context;
+  const client = getClient({ apiVersion: "2024-01-17" });
+
+  // Fetch all pages with their slugs
+  const pages = await client.fetch<SanityPage[]>(
+    `
+    *[_type == "page"] {
+      _id,
+      _type,
+      title,
+      "slug": slug.current
+    }
+  `,
+    {},
+    {
+      perspective: "previewDrafts",
+    },
+  );
+
+  interface GroupedPages {
+    [key: string]: {
+      name: string;
+      parent: SanityPage | undefined;
+      children: SanityPage[];
+    };
+  }
+
+  const rootPages = pages.filter(
+    (p) =>
+      p.slug.split("/").filter(Boolean).length === 1 &&
+      !pages.some((child) => child.slug.startsWith(`${p.slug}/`)),
+  );
+  const nestedPages = pages.filter(
+    (p) => p.slug.split("/").filter(Boolean).length > 1,
+  );
+  const grouped = nestedPages.reduce<GroupedPages>((acc, page) => {
+    const pathParts = page.slug.split("/").filter(Boolean);
+    if (pathParts.length < 2) return acc;
+
+    const [first] = pathParts;
+    const parent = pages.find((p) => p.slug === `/${first}`);
+    if (!acc[first]) {
+      acc[first] = {
+        name: first,
+        parent,
+        children: [],
+      };
+    }
+    acc[first].children.push(page);
+    return acc;
+  }, {});
+
+  return S.listItem()
+    .title(list.title ?? getTitleCase(list.type))
+    .icon(list.icon ?? FolderIcon)
+    .child(
+      S.list()
+        .title(list.title ?? getTitleCase(list.type))
+        .items([
+          S.divider(),
+          ...Object.values(grouped).map((g) =>
+            S.listItem()
+              .title(getTitleCase(g.name))
+              .icon(FolderIcon)
+              .child(
+                S.documentList()
+                  .title(g.name)
+                  .filter(
+                    `_type == "page" && string::startsWith(slug.current, "${g.parent?.slug}")`,
+                  )
+                  .defaultOrdering([{ field: "_createdAt", direction: "desc" }])
+                  .initialValueTemplates([
+                    {
+                      id: "create-child-page",
+                      title: "Create Child Page",
+                      schemaType: "page",
+                      parameters: {
+                        slug: g.parent?.slug || "",
+                        title: getTitleCase(g.name),
+                      },
+                      templateId: "create-child-page",
+                      type: "initialValueTemplateItem",
+                    },
+                    // S.initialValueTemplateItem("create-child-page", {
+                    S.initialValueTemplateItem("create-child-paged-list", {
+                      parentId: g.parent?._id || "",
+                      title: `${getTitleCase(g.name)} List`,
+                    }),
+                  ])
+                  .schemaType("page"),
+              ),
+          ),
+          S.divider(),
+          ...rootPages.map((p) =>
+            S.documentListItem().schemaType("page").title(p.title).id(p._id),
+          ),
+        ]),
+    );
+};
+
+export const structure = async (
   S: StructureBuilder,
   context: StructureResolverContext,
 ) => {
@@ -97,7 +224,12 @@ export const structure = (
     .items([
       createSingleTon({ S, type: "homePage", icon: HomeIcon }),
       S.divider(),
-      createList({ S, type: "page", title: "Pages" }),
+      await createNestedList({
+        S,
+        list: { type: "page", title: "Pages" },
+        index: { type: "page" },
+        context,
+      }),
       createIndexList({
         S,
         index: { type: "blogIndex", icon: BookMarked },

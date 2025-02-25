@@ -1,6 +1,6 @@
 import { assist } from "@sanity/assist";
 import { visionTool } from "@sanity/vision";
-import { defineConfig } from "sanity";
+import { defineConfig, type TemplateResolver } from "sanity";
 import { presentationTool } from "sanity/presentation";
 import { structureTool } from "sanity/structure";
 import {
@@ -21,6 +21,96 @@ const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
 const dataset = process.env.SANITY_STUDIO_DATASET;
 const title = process.env.SANITY_STUDIO_TITLE;
 const presentationOriginUrl = process.env.SANITY_STUDIO_PRESENTATION_URL;
+
+const template: TemplateResolver = (prev, { getClient }) => {
+  return [
+    ...createPageTemplate(),
+    ...prev,
+    {
+      id: "create-child-page",
+      title: "Create Child Page",
+      schemaType: "page",
+      parameters: [
+        {
+          name: "slug",
+          type: "string",
+          title: "Parent Slug",
+        },
+        {
+          name: "title",
+          type: "string",
+          title: "Page Title",
+        },
+      ],
+      value: async (props: { parameters: { slug: string; title: string } }) => {
+        console.log("🚀 ~ props:", props);
+        const parentSlug = props.parameters?.slug || "";
+        const pageTitle = props.parameters?.title || "";
+        const childSlug = `${parentSlug}/${pageTitle}`
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/^\/+/, "");
+
+        return {
+          _type: "page",
+          title: pageTitle,
+          slug: {
+            _type: "slug",
+            current: childSlug,
+          },
+        };
+      },
+    },
+    {
+      id: "create-child-paged-list",
+      title: "Create Child Paged List",
+      schemaType: "page",
+      // parameters: [
+      //   {
+      //     name: "parentId",
+      //     type: "string",
+      //     title: "Parent Document ID",
+      //   },
+      //   {
+      //     name: "title",
+      //     type: "string",
+      //     title: "Page Title",
+      //   },
+      // ],
+      value: async (props: {
+        parameters: { parentId: string; title: string };
+      }) => {
+        console.log("🚀 ~ props:", props);
+        // const client = getClient({ apiVersion: "2024-01-17" });
+        const parentId = props.parameters?.parentId;
+        const pageTitle = props.parameters?.title || "Child Paged List";
+
+        // let parentSlug = "";
+        // if (parentId) {
+        //   const parent = await client.fetch(
+        //     `*[_id == $parentId][0].slug.current`,
+        //     { parentId },
+        //   );
+        //   parentSlug = parent || "";
+        // }
+
+        // const childSlug = `${parentSlug}/${pageTitle}`
+        //   .toLowerCase()
+        //   .replace(/\s+/g, "-")
+        //   .replace(/^\/+/, "");
+
+        return {
+          _type: "page",
+          title: pageTitle,
+          // slug: {
+          //   _type: "slug",
+          //   // current: childSlug,
+          // },
+        };
+      },
+    },
+  ];
+};
 
 export default defineConfig({
   name: "default",
@@ -71,6 +161,6 @@ export default defineConfig({
   },
   schema: {
     types: schemaTypes,
-    templates: createPageTemplate(),
+    templates: template,
   },
 });
