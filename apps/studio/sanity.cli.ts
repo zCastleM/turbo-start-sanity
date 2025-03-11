@@ -12,6 +12,6 @@ export default defineCliConfig({
   studioHost:
     host && host !== "main"
       ? `${host}-turbo-start-sanity`
-      : "turbo-start-sanity",
+      : "puai",
   autoUpdates: false,
 });
