@@ -15,6 +15,11 @@ jobs:
       NODE_OPTIONS: "--max_old_space_size=4096"
       PNPM_VERSION: 9.12.3
       HOST_NAME: ${{ github.head_ref || github.ref_name }}
+      SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
+      SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
+      SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
+      SANITY_STUDIO_TITLE: ${{ secrets.SANITY_STUDIO_TITLE }}
+      SANITY_STUDIO_PRESENTATION_URL: ${{ secrets.SANITY_STUDIO_PRESENTATION_URL }}
 
     steps:
       - name: Checkout repository
@@ -34,21 +39,15 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      - name: Print environment variables
+        run: printenv | grep SANITY
+
       - name: Validate SANITY_AUTH_TOKEN
         run: |
           if [ -z "${{ secrets.SANITY_DEPLOY_TOKEN }}" ]; then
             echo "SANITY_DEPLOY_TOKEN não está configurado! Verifique os segredos no GitHub."
             exit 1
           fi
-        env:
-          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
-          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
-          SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
-          SANITY_STUDIO_TITLE: ${{ secrets.SANITY_STUDIO_TITLE }}
-          SANITY_STUDIO_PRESENTATION_URL: ${{ secrets.SANITY_STUDIO_PRESENTATION_URL }}
-
-      - name: Print environment variables
-        run: printenv | grep SANITY
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
@@ -59,9 +58,4 @@ jobs:
           echo "Deploying Sanity Studio..."
           pnpm run deploy
         env:
-          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_DEPLOY_TOKEN }}
-          SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
-          SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
-          SANITY_STUDIO_TITLE: ${{ secrets.SANITY_STUDIO_TITLE }}
-          SANITY_STUDIO_PRESENTATION_URL: ${{ secrets.SANITY_STUDIO_PRESENTATION_URL }}
           CI: true
