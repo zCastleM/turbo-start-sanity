@@ -53,7 +53,7 @@ jobs:
           fi
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --prefer-offline
+        run: pnpm install --frozen-lockfile --ignore-scripts --prefer-offline
 
       - name: Deploy Sanity Studio
         working-directory: ./apps/studio
