@@ -42,13 +42,6 @@ jobs:
       - name: Print environment variables
         run: printenv | grep SANITY
 
-      - name: Validate SANITY_AUTH_TOKEN
-        run: |
-          if [ -z "${{ secrets.SANITY_DEPLOY_TOKEN }}" ]; then
-            echo "SANITY_DEPLOY_TOKEN não está configurado! Verifique os segredos no GitHub."
-            exit 1
-          fi
-
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --prefer-offline
 
