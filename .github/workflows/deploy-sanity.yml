@@ -39,6 +39,9 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
+      - name: Print environment variables
+        run: printenv | grep SANITY
+
       - name: Validate SANITY_AUTH_TOKEN
         run: |
           if [ -z "${{ secrets.SANITY_DEPLOY_TOKEN }}" ]; then
