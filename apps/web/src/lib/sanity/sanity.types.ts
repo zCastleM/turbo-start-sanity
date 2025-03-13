@@ -356,6 +356,9 @@ export type PageBuilder = Array<
   | ({
       _key: string;
     } & SubscribeNewsletter)
+  | ({
+      _key: string;
+  } & logoListWithMotion)
 >;
 
 export type Button = {
