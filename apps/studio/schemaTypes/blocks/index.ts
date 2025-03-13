@@ -3,6 +3,7 @@ import { faqAccordion } from "./faq-accordion";
 import { featureCardsIcon } from "./feature-cards-icon";
 import { hero } from "./hero";
 import { imageLinkCards } from "./image-link-cards";
+import { logoListWithMotion } from "./logoclouds";
 import { subscribeNewsletter } from "./subscribe-newsletter";
 
 export const pageBuilderBlocks = [
@@ -12,4 +13,5 @@ export const pageBuilderBlocks = [
   faqAccordion,
   imageLinkCards,
   subscribeNewsletter,
+  logoListWithMotion,
 ];
