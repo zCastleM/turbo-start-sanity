@@ -38,7 +38,7 @@ const BLOCK_COMPONENTS = {
   featureCardsIcon: FeatureCardsWithIcon,
   subscribeNewsletter: SubscribeNewsletter,
   imageLinkCards: ImageLinkCards,
-  LogoListWithMotion: LogoListWithMotion,
+  logoListWithMotion: LogoListWithMotion,
 } as const;
 
 type BlockType = keyof typeof BLOCK_COMPONENTS;

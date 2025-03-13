@@ -337,6 +337,23 @@ export type Hero = {
   >;
 };
 
+export type logoListWithMotion = {
+  _type: "logoListWithMotion";
+  title?: string;
+  logos?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
+};
+
 export type PageBuilder = Array<
   | ({
       _key: string;
@@ -1810,6 +1827,53 @@ export type QuerySlugPageDataResult = {
           _key: string;
         }> | null;
       }
+      |  {
+        _key: string;
+        _type: "logoListWithMotion";
+        eyebrow?: string;
+        title?: string;
+        richText?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            customLink?: CustomUrl;
+            _type: "customLink";
+            _key: string;
+            openInNewTab: boolean | null;
+            href: string | "#" | null;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        logos?: Array<{
+          image: {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+            alt: string | "Image-Broken";
+            blurData: string | null;
+            dominantColor: string | null;
+          } | null;
+          url?: CustomUrl;
+          _type: "logoListWithMotionLogo";
+          _key: string;
+          openInNewTab: boolean | null;
+          href: string | null;
+        }> | null;
+      }
   > | null;
   seoTitle?: string;
   seoDescription?: string;
@@ -2225,6 +2289,53 @@ export type QueryBlogIndexPageDataResult = {
           level?: number;
           _type: "block";
           _key: string;
+        }> | null;
+      }
+      |  {
+        _key: string;
+        _type: "logoListWithMotion";
+        eyebrow?: string;
+        title?: string;
+        richText?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "h2" | "h3" | "h4" | "h5" | "h6" | "inline" | "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            customLink?: CustomUrl;
+            _type: "customLink";
+            _key: string;
+            openInNewTab: boolean | null;
+            href: string | "#" | null;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+        logos?: Array<{
+          image: {
+            asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+            };
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+            alt: string | "Image-Broken";
+            blurData: string | null;
+            dominantColor: string | null;
+          } | null;
+          url?: CustomUrl;
+          _type: "logoListWithMotionLogo";
+          _key: string;
+          openInNewTab: boolean | null;
+          href: string | null;
         }> | null;
       }
   > | null;
