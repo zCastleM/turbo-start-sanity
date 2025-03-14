@@ -1,8 +1,8 @@
 import { defineField, defineType } from 'sanity';
 import { ImageIcon } from 'lucide-react';
 
-export const logoListWithMotion = defineType({
-  name: 'logoListWithMotion',
+export const logoClouds = defineType({
+  name: 'logoClouds',
   title: 'Logo List with Motion',
   type: 'object',
   icon: ImageIcon,
