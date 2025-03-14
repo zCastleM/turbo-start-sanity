@@ -353,14 +353,14 @@ export type Logo = {
     dominantColor: string | null;
   } | null;
   url?: CustomUrl;
-  _type: "logoListWithMotionLogo";
+  _type: "logoCloud";
   _key: string;
   openInNewTab: boolean | null;
   href: string | null;
 };
 
-export type logoListWithMotion = {
-  _type: "logoListWithMotion";
+export type logoClouds = {
+  _type: "logoClouds";
   title?: string;
   logos?: Array<Logo> | null;
 };
@@ -386,7 +386,7 @@ export type PageBuilder = Array<
     } & SubscribeNewsletter)
   | ({
       _key: string;
-  } & logoListWithMotion)
+  } & logoClouds)
 >;
 
 export type Button = {
@@ -947,7 +947,7 @@ export type AllSanitySchemaTypes =
   | SubscribeNewsletter
   | ImageLinkCards
   | FaqAccordion
-  | logoListWithMotion
+  | logoClouds
   | FeatureCardsIcon
   | Cta
   | Hero
@@ -1841,7 +1841,7 @@ export type QuerySlugPageDataResult = {
       }
       |  {
         _key: string;
-        _type: "logoListWithMotion";
+        _type: "logoClouds";
         eyebrow?: string;
         title?: string;
         richText?: Array<{
@@ -1880,7 +1880,7 @@ export type QuerySlugPageDataResult = {
             dominantColor: string | null;
           } | null;
           url?: CustomUrl;
-          _type: "logoListWithMotionLogo";
+          _type: "logoCloud";
           _key: string;
           openInNewTab: boolean | null;
           href: string | null;
@@ -2305,7 +2305,7 @@ export type QueryBlogIndexPageDataResult = {
       }
       |  {
         _key: string;
-        _type: "logoListWithMotion";
+        _type: "logoClouds";
         eyebrow?: string;
         title?: string;
         richText?: Array<{
@@ -2344,7 +2344,7 @@ export type QueryBlogIndexPageDataResult = {
             dominantColor: string | null;
           } | null;
           url?: CustomUrl;
-          _type: "logoListWithMotionLogo";
+          _type: "logoCloud";
           _key: string;
           openInNewTab: boolean | null;
           href: string | null;
