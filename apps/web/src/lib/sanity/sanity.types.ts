@@ -337,10 +337,8 @@ export type Hero = {
   >;
 };
 
-export type logoListWithMotion = {
-  _type: "logoListWithMotion";
-  title?: string;
-  logos?: Array<{
+export type Logo = {
+  image: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -350,8 +348,21 @@ export type logoListWithMotion = {
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
-    _key: string;
-  }>;
+    alt: string | "Image-Broken";
+    blurData: string | null;
+    dominantColor: string | null;
+  } | null;
+  url?: CustomUrl;
+  _type: "logoListWithMotionLogo";
+  _key: string;
+  openInNewTab: boolean | null;
+  href: string | null;
+};
+
+export type logoListWithMotion = {
+  _type: "logoListWithMotion";
+  title?: string;
+  logos?: Array<Logo> | null;
 };
 
 export type PageBuilder = Array<
@@ -936,6 +947,7 @@ export type AllSanitySchemaTypes =
   | SubscribeNewsletter
   | ImageLinkCards
   | FaqAccordion
+  | logoListWithMotion
   | FeatureCardsIcon
   | Cta
   | Hero
