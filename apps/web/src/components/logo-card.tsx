@@ -7,19 +7,23 @@ import { SanityImage } from "./sanity-image";
 
 export type LogoCardProps = {
   logo: NonNullable<PagebuilderType<"logoClouds">["logos"]>[number];
-  className?: string;
+  logoHoverEffect?: boolean;
 };
 
-export function LogoCard({ logo, className }: LogoCardProps) {
+export function LogoCard({ logo, logoHoverEffect }: LogoCardProps) {
   const { image } = logo ?? {};
   return (
-    <div className={cn("flex justify-center", className)}>
-      {image?.asset && (
-        <SanityImage
-          asset={image}
-          className="object-contain max-h-16 md:max-h-20 w-auto transition-all duration-300 pointer-events-none grayscale hover:grayscale-0"
-        />
+
+    <div className="relative group">
+        {image?.asset && (
+    <SanityImage
+      asset={image}
+      className={cn(
+        "object-contain max-h-16 md:max-h-20 w-auto transition-all duration-300 pointer-events-none",
+        logoHoverEffect ? "grayscale group-hover:grayscale-0" : "grayscale",
       )}
-    </div>
+    />  )}
+  </div> 
+
   );
 }
