@@ -1377,7 +1377,7 @@ export type QueryHomePageDataResult = {
       }
     |  {
       _key: string;
-      _type: "logoListWithMotion";
+      _type: "logoClouds";
       eyebrow?: string;
       title?: string;
       richText?: Array<{
@@ -1416,7 +1416,7 @@ export type QueryHomePageDataResult = {
           dominantColor: string | null;
         } | null;
         url?: CustomUrl;
-        _type: "logoListWithMotionLogo";
+        _type: "logoCloud";
         _key: string;
         openInNewTab: boolean | null;
         href: string | null;

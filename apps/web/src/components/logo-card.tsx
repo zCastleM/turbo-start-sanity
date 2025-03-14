@@ -6,7 +6,7 @@ import type { PagebuilderType } from "@/types";
 import { SanityImage } from "./sanity-image";
 
 export type LogoCardProps = {
-  logo: NonNullable<PagebuilderType<"logoListWithMotion">["logos"]>[number];
+  logo: NonNullable<PagebuilderType<"logoClouds">["logos"]>[number];
   className?: string;
 };
 

@@ -13,7 +13,7 @@ import { FeatureCardsWithIcon } from "./sections/feature-cards-with-icon";
 import { HeroBlock } from "./sections/hero";
 import { ImageLinkCards } from "./sections/image-link-cards";
 import { SubscribeNewsletter } from "./sections/subscribe-newsletter";
-import { LogoListWithMotion } from "./sections/logocloudes";
+import { LogoCloud } from "./sections/logocloudes";
 
 type PageBlock = NonNullable<
   NonNullable<QueryHomePageDataResult>["pageBuilder"]
@@ -38,7 +38,7 @@ const BLOCK_COMPONENTS = {
   featureCardsIcon: FeatureCardsWithIcon,
   subscribeNewsletter: SubscribeNewsletter,
   imageLinkCards: ImageLinkCards,
-  logoListWithMotion: LogoListWithMotion,
+  logoClouds: LogoCloud,
 } as const;
 
 type BlockType = keyof typeof BLOCK_COMPONENTS;

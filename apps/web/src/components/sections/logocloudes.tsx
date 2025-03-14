@@ -11,7 +11,7 @@ import type { PagebuilderType } from "@/types"
 
 import { LogoCard } from "../logo-card";
 
-export type LogoCloudProps = PagebuilderType<"logoListWithMotion">;
+export type LogoCloudProps = PagebuilderType<"logoClouds">;
 
 export function LogoCloud({ title, logos }: LogoCloudProps) {
   const [ref, inView] = useInView({
